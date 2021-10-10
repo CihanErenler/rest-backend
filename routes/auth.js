@@ -39,6 +39,7 @@ router.post("/register", async (req, res) => {
     email: body.email,
     password: hashedPass,
     city: body.city,
+    fav_food: 'Pizza of course'
   });
 
   try {
