@@ -15,8 +15,10 @@ mongoose.connect(process.env.DB_URL, { useNewUrlParser: true }, () => {
 // Import the router
 const authRoute = require("./routes/auth");
 const likedRoute = require("./routes/liked");
+const userRoute =  require("./routes/user");
 
 // Routes
+app.use("/api/user", userRoute);
 app.use("/api/user", authRoute);
 app.use("/api", likedRoute);
 
