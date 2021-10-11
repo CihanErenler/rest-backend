@@ -58,8 +58,9 @@ router.get("/liked", verify, async (req, res) => {
 // Delete liked restaurant from database
 router.delete("/liked/:id", verify, async (req, res) => {
   const id = req.params.id;
+
   try {
-    await Rest.deleteOne({ _id: id });
+    await Rest.findByIdAndDelete(id);
     res.status(204).json({
       success: 1,
       message: "Item deleted",
