@@ -21,6 +21,10 @@ const user = mongoose.Schema({
     type: String,
     required: true,
   },
+  fav_food: {
+    type: String,
+    required: false,
+  }
 });
 
 module.exports = mongoose.model("User", user);
