@@ -1,14 +1,18 @@
 const router = require("express").Router();
 const verify = require("../verifyToken");
 const Rest = require("../model/rests");
+const jwt = require("jsonwebtoken");
 
 // Add a liked place to database
 router.post("/liked", verify, async (req, res) => {
   const body = req.body;
+  const token = req.header('auth-token')
+  const decode = await jwt.decode(token)
+  const id = decode._id
 
   const place = new Rest({
     rest_id: body.rest_id,
-    user_id: body.user_id,
+    user_id: id,
     name: body.name,
     img_url: body.img_url,
     rating: body.rating,
@@ -32,8 +36,12 @@ router.post("/liked", verify, async (req, res) => {
 
 // Get all liked restaurants
 router.get("/liked", verify, async (req, res) => {
+  const token = req.header('auth-token')
+  const decode = await jwt.decode(token)
+  const id = decode._id
+
   try {
-    const list = await Rest.find();
+    const list = await Rest.find({user_id: id});
     res.status(200).json({
       success: 1,
       message: list,
@@ -50,8 +58,9 @@ router.get("/liked", verify, async (req, res) => {
 // Delete liked restaurant from database
 router.delete("/liked/:id", verify, async (req, res) => {
   const id = req.params.id;
+
   try {
-    await Rest.deleteOne({ _id: id });
+    await Rest.findByIdAndDelete(id);
     res.status(204).json({
       success: 1,
       message: "Item deleted",
